@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+      <meta name="viewport" content="width=device-width" />
+      <title>登陆系统</title>
+      <link href="/static/Iview/iview.css" rel="stylesheet" /> 
+      <script src="/static/Scripts/vue/vue.js"></script>    
+      <script src="/static/Scripts/vue/vue-resource.js"></script>
+      <script src="/static/Scripts/iview/iview.js"></script> 
+  </head>
+<body>
+    <style scoped>
+        #app{
+         background:#eee;
+         height:100%;width:100%;
+         border: 1px solid green;
+         position:fixed;
+         text-align:center
+        }
+        .container{
+          margin:40px auto;    
+          width:380px;
+          height:250px;   
+          text-align:center   
+        }
+        #app #summary{
+          width:auto;
+          height:30px;
+          margin-top: 16px;
+        }
+        </style>
+  <div id="app">
+      <Card class="container"  >       
+           <Icon type="ios-contact" size="45"></Icon><br>
+           身份：<i-Select placeholder="请选择您的身份" v-model="user" style="width: 165px">
+              <i-Option v-for="item in userList" :value="item.value" :key="item.value">{{ item.label }}</i-Option>
+          </i-Select>   
+           <br><br>
+           口令：<i-Input type="password" v-model="pwd" placeholder="输入您的登录口令" style="width: 165px"></i-Input>
+           <br><br>
+           <i-button @click="submit" type="success"  style="width: 230px" > 登 录 </i-button>           
+      </Card>
+      <div id="summary"><p >欢迎使用</p></div>
+  </div>
+</body>
+<script>
+var main=new Vue({
+  el:"#app",
+  data:{
+     userList:[
+      {
+        value:"1",
+        label:"管理员1"
+      },
+      {
+        value:"2",
+        label:"管理员2"
+      },
+      {
+        value:"3",
+        label:"管理员3"
+      }
+     ],
+     user:'',
+     pwd:'',
+
+  },
+  methods:{
+    submit(){
+      this.$Message.success(this.user+'-'+this.pwd);
+    },
+  }
+
+
+
+})
+
+</script>
+</html>
