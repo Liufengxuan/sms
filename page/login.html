@@ -12,7 +12,7 @@
 <body>
     <style scoped>
         #app{
-         background:#eee;
+         background:rgba(143, 139, 139, 0.055);
          height:100%;width:100%;
          border: 1px solid green;
          position:fixed;
@@ -39,7 +39,10 @@
            <br><br>
            口令：<i-Input type="password" v-model="pwd" placeholder="输入您的登录口令" style="width: 165px"></i-Input>
            <br><br>
-           <i-button @click="submit" type="success"  style="width: 230px" > 登 录 </i-button>           
+
+        <i-Select placeholder="选择机组" v-model="station" style="width: auto">
+            <i-Option v-for="item in stationList" :value="item.dbname" :key="item.name">{{ item.name }}</i-Option>
+        </i-Select>   <i-button @click="submit" type="success"  style="width: 170px" > 登 录 </i-button>           
       </Card>
       <div id="summary"><p >欢迎使用</p></div>
   </div>
@@ -48,29 +51,51 @@
 var main=new Vue({
   el:"#app",
   data:{
-     userList:[
-      {
-        value:"1",
-        label:"管理员1"
-      },
-      {
-        value:"2",
-        label:"管理员2"
-      },
-      {
-        value:"3",
-        label:"管理员3"
-      }
-     ],
+     userList:[],
+     stationList:[],
      user:'',
      pwd:'',
+     station:'',
 
   },
   methods:{
     submit(){
       this.$Message.success(this.user+'-'+this.pwd);
     },
-  }
+    GetStationList(){
+      this.$http.get("/api/GetStationList").then(resp => {
+                    if (resp.body.state == 0) {
+                        this.stationList = resp.body.data;
+                        this.station=this.stationList[0].dbname;            
+                    } else {
+                       this.$message.error(resp.body.msg);
+                    }
+
+                }, function () {
+                    this.$message.error('获取机组信息失败！');
+                    })
+    },
+    GetUserList(){
+      this.$http.get("/api/GetUserList").then(resp => {
+                    if (resp.body.state == 0) {
+                        this.stationList = resp.body.data;
+                        this.station=this.stationList[0].dbname;            
+                    } else {
+                       this.$message.error(resp.body.msg);
+                    }
+
+                }, function () {
+                    this.$message.error('获取机组信息失败！');
+          })
+    }
+  },
+  watch: {
+   
+  },
+  created() {
+     this.GetStationList();
+  
+  },
 
 
 
