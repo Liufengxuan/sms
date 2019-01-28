@@ -56,3 +56,11 @@ func (ctx *SessionController) GetStationList() {
 		resp["msg"] = "/conf/db.conf数据库信息未能正确解析。"
 	}
 }
+
+func (ctx *SessionController) GetUserList() {
+	resp := make(map[string]interface{})
+	defer ctx.retData(resp)
+
+	ctx.Ctx.Request.Body.Read()
+
+}

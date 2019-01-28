@@ -42,7 +42,7 @@
 
         <i-Select placeholder="选择机组" v-model="station" style="width: auto">
             <i-Option v-for="item in stationList" :value="item.dbname" :key="item.name">{{ item.name }}</i-Option>
-        </i-Select>   <i-button @click="submit" type="success"  style="width: 170px" > 登 录 </i-button>           
+        </i-Select>   <i-button @click="submit" type="success"  style="width: auto" > 登 录 </i-button>           
       </Card>
       <div id="summary"><p >欢迎使用</p></div>
   </div>
@@ -63,7 +63,7 @@ var main=new Vue({
       this.$Message.success(this.user+'-'+this.pwd);
     },
     GetStationList(){
-      this.$http.get("/api/GetStationList").then(resp => {
+      this.$http.get("/api/v1.0/GetStationList").then(resp => {
                     if (resp.body.state == 0) {
                         this.stationList = resp.body.data;
                         this.station=this.stationList[0].dbname;            
@@ -76,21 +76,23 @@ var main=new Vue({
                     })
     },
     GetUserList(){
-      this.$http.get("/api/GetUserList").then(resp => {
+      this.$http.get("/api/v1.0/GetUserList","{station:'"+this.station+"'}").then(resp => {
                     if (resp.body.state == 0) {
-                        this.stationList = resp.body.data;
-                        this.station=this.stationList[0].dbname;            
+                        this.userList = resp.body.data;
+                        this.user=this.userList[0].dbname;            
                     } else {
                        this.$message.error(resp.body.msg);
                     }
 
                 }, function () {
-                    this.$message.error('获取机组信息失败！');
+                    this.$message.error('获取身份信息失败！');
           })
     }
   },
   watch: {
-   
+   'station':function(){
+         this.GetUserList();
+   }
   },
   created() {
      this.GetStationList();
