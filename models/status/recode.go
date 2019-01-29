@@ -1,31 +1,39 @@
-package models
+package status
 
 const (
 	RECODE_OK = "0"
 
-	RECODE_INI_ReadERR = "5001"
+	RECODE_INI_READERR  = "5101" //"配置文件读取失败"
+	RECODE_DB_QUERYERR  = "5202" //查询出错。
+	RECODE_DB_QUERYNUll = "5251" //查询结果为空。
+	RECODE_DB_CONNERR   = "5401" //数据库连接失败
 
-	RECODE_DBERR      = "4001"
-	RECODE_NODATA     = "4002"
-	RECODE_DATAEXIST  = "4003"
-	RECODE_DATAERR    = "4004"
+	RECODE_DBERR     = "4001"
+	RECODE_NODATA    = "4002"
+	RECODE_DATAEXIST = "4003"
+	RECODE_DATAERR   = "4004"
+
 	RECODE_SESSIONERR = "4101"
 	RECODE_LOGINERR   = "4102"
 	RECODE_PARAMERR   = "4103"
 	RECODE_USERERR    = "4104"
 	RECODE_ROLEERR    = "4105"
 	RECODE_PWDERR     = "4106"
-	RECODE_REQERR     = "4201"
-	RECODE_IPERR      = "4202"
-	RECODE_THIRDERR   = "4301"
-	RECODE_IOERR      = "4302"
-	RECODE_SERVERERR  = "4500"
-	RECODE_UNKNOWERR  = "4501"
+
+	RECODE_REQERR    = "4201"
+	RECODE_IPERR     = "4202"
+	RECODE_THIRDERR  = "4301"
+	RECODE_IOERR     = "4302"
+	RECODE_SERVERERR = "4500"
+	RECODE_UNKNOWERR = "4501"
 )
 
 var recodeText = map[string]string{
-	RECODE_OK:          "成功",
-	RECODE_INI_ReadERR: "配置文件读取失败", //5001
+	RECODE_OK:           "成功",
+	RECODE_INI_READERR:  "配置文件读取失败", //5101
+	RECODE_DB_CONNERR:   "数据服务器连接失败",
+	RECODE_DB_QUERYNUll: "查询结果为空。",
+	RECODE_DB_QUERYERR:  "查询出错。",
 
 	RECODE_DBERR:      "数据库查询错误",
 	RECODE_NODATA:     "无数据",

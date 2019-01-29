@@ -34,7 +34,7 @@
       <Card class="container"  >       
            <Icon type="ios-contact" size="45"></Icon><br>
            身份：<i-Select placeholder="请选择您的身份" v-model="user" style="width: 165px">
-              <i-Option v-for="item in userList" :value="item.value" :key="item.value">{{ item.label }}</i-Option>
+              <i-Option v-for="item in userList" :value="item.id" :key="item.id">{{ item.name }}</i-Option>
           </i-Select>   
            <br><br>
            口令：<i-Input type="password" v-model="pwd" placeholder="输入您的登录口令" style="width: 165px"></i-Input>
@@ -76,10 +76,12 @@ var main=new Vue({
                     })
     },
     GetUserList(){
-      this.$http.get("/api/v1.0/GetUserList","{station:'"+this.station+"'}").then(resp => {
+        this.userList=[];
+        this.user='';
+      this.$http.get("/api/v1.0/GetUserList",{params:{station:this.station}}).then(resp => {
                     if (resp.body.state == 0) {
                         this.userList = resp.body.data;
-                        this.user=this.userList[0].dbname;            
+                        this.user=this.userList[0].name;            
                     } else {
                        this.$message.error(resp.body.msg);
                     }
@@ -95,12 +97,8 @@ var main=new Vue({
    }
   },
   created() {
-     this.GetStationList();
-  
+     this.GetStationList(); 
   },
-
-
-
 })
 
 </script>
