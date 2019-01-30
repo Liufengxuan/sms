@@ -23,6 +23,7 @@ func (ctx *SessionController) retData(resp map[string]interface{}) {
 }
 
 //GetStationList 获取各个数据库的名称
+//Success： {"data": [{ "dbname": "CPMS","name": "搅拌站1"}], "msg": "成功", "state": "0"}
 func (ctx *SessionController) GetStationList() {
 	resp := make(map[string]interface{})
 	defer ctx.retData(resp)
@@ -63,6 +64,7 @@ func (ctx *SessionController) GetStationList() {
 }
 
 //GetUserList 根据数据库的名称加载此数据库的用户列表。
+//Success： {"data": [{ "id": 13,"name": "系统管理员","dept": "系统部", "duty": "管理员"}],"msg": "成功","state": "0"}
 func (ctx *SessionController) GetUserList() {
 	resp := make(map[string]interface{})
 	defer ctx.retData(resp)
@@ -94,6 +96,7 @@ func (ctx *SessionController) GetUserList() {
 		rows.Scan(&u.ID, &u.Name, &u.Pwd, &u.Dept, &u.Duty)
 		users = append(users, u)
 	}
+	rows.Close()
 	resp["state"] = status.RECODE_OK
 	resp["msg"] = status.RecodeText(status.RECODE_OK)
 	resp["data"] = users

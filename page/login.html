@@ -34,7 +34,7 @@
       <Card class="container"  >       
            <Icon type="ios-contact" size="45"></Icon><br>
            身份：<i-Select placeholder="请选择您的身份" v-model="user" style="width: 165px">
-              <i-Option v-for="item in userList" :value="item.id" :key="item.id">{{ item.name }}</i-Option>
+              <i-Option v-for="item in userList" :value="item.id" :key="item.name">{{ item.name }}</i-Option>
           </i-Select>   
            <br><br>
            口令：<i-Input type="password" v-model="pwd" placeholder="输入您的登录口令" style="width: 165px"></i-Input>
@@ -42,9 +42,10 @@
 
         <i-Select placeholder="选择机组" v-model="station" style="width: auto">
             <i-Option v-for="item in stationList" :value="item.dbname" :key="item.name">{{ item.name }}</i-Option>
-        </i-Select>   <i-button @click="submit" type="success"  style="width: auto" > 登 录 </i-button>           
+        </i-Select>
+         <i-button @click="PostLogin" type="success"  style="width: auto" > 登 录 </i-button>           
       </Card>
-      <div id="summary"><p >欢迎使用</p></div>
+      <div id="summary"><p >欢迎使用啥啥啥啥啥。。。。。。。。</p></div>
   </div>
 </body>
 <script>
@@ -59,8 +60,17 @@ var main=new Vue({
 
   },
   methods:{
-    submit(){
-      this.$Message.success(this.user+'-'+this.pwd);
+    PostLogin(){
+       if(this.user=='')
+       {
+        this.$Message.warning('请选中您的登陆身份！');
+        return
+       }
+       if(this.pwd=='')
+       {
+        this.$Message.warning('请输入您的登录口令');
+        return 
+       }
     },
     GetStationList(){
       this.$http.get("/api/v1.0/GetStationList").then(resp => {
@@ -81,13 +91,13 @@ var main=new Vue({
       this.$http.get("/api/v1.0/GetUserList",{params:{station:this.station}}).then(resp => {
                     if (resp.body.state == 0) {
                         this.userList = resp.body.data;
-                        this.user=this.userList[0].name;            
+                        this.user=this.userList[0].id;            
                     } else {
-                       this.$message.error(resp.body.msg);
+                       this.$Message.error(resp.body.msg);
                     }
 
                 }, function () {
-                    this.$message.error('获取身份信息失败！');
+                    this.$Message.error('获取身份信息失败！');
           })
     }
   },
